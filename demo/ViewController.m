@@ -6,6 +6,8 @@
 //
 
 #import "ViewController.h"
+#import <CoreLocation/CoreLocation.h>
+
 #import <HansTranslation/HansTranslation.h>
 
 @interface ViewController (){
@@ -36,6 +38,10 @@
     if (@available(iOS 18.0, *)) {
         HansTranslation *transer = [[HansTranslation alloc] initWithSourceLanguage:sourceIdentifier
                                                                 withTargetLanguage:target];
+        transer.title = @"只有iOS 18 以后的操作系统才可用";
+        transer.headerText = @"点击翻译按钮继续";
+        transer.buttonText = @"翻译";
+        transer.footerText = @"尾巴";
         [transer translate:demoStrings
                 withRootVC:self
                withHandler:^(HansTranslation * _Nullable translater,
@@ -80,8 +86,9 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     if (@available(iOS 18.0, *)) {
-        NSArray *array = [HansTranslation existLanguageIdentfiers];
+        NSArray <NSString *>*array = [HansTranslation existLanguageIdentfiers];
         for (NSString *str in array){
             NSLog(@"%@ (%@) Installed.", [HansTranslation nameWithLocalIdentifier:str], str);
         }
@@ -90,7 +97,6 @@
         for (NSString *str in array){
             NSLog(@"Available %@ (%@).", [HansTranslation nameWithLocalIdentifier:str], str);
         }
-        
         
         sourceIdentifier = @"en-CN";
         demoStrings = @[
@@ -110,9 +116,10 @@
         for (NSString *str in [HansTranslation availableLanguageIdentifiers]){
             [targetArray addObject:str];
         }
-    //    targetArray = @[@"zh-Hans-CN", @"ja"];
         runningIndex = 0;
         [self translateAction];
+    }else{
+        NSLog(@"iOS 18 only.");
     }
     return;
 }

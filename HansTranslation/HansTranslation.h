@@ -2,10 +2,17 @@
 //  HansTranslation.h
 //  HansTranslation
 //
-//  Created by jia yu on 2024/9/22.
+//  Created by MingJie Han on 2024/9/22.
 //
 
-#import <UIKit/UIKit.h>
+//
+//#if TARGET_OS_IOS
+//#import <UIKit/UIKit.h>
+//#elif TARGET_OS_MAC
+//#import <Cocoa/Cocoa.h>
+//#endif
+#import <Foundation/Foundation.h>
+#import <HansTranslation/HansTranslation.h>
 
 //! Project version number for HansTranslation.
 FOUNDATION_EXPORT double HansTranslationVersionNumber;
@@ -13,37 +20,35 @@ FOUNDATION_EXPORT double HansTranslationVersionNumber;
 //! Project version string for HansTranslation.
 FOUNDATION_EXPORT const unsigned char HansTranslationVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <HansTranslation/PublicHeader.h>
-#import <HansTranslation/HansTranslation.h>
 
-#ifndef HansTranslation_KEYS
-#define HansTranslation_KEYS
-//TODO I want to move those into HansTranslationPrivate is NOT public header.
-//But I can NOT, Swift can NOT found those.
-#define completedNotificationName @"SRTTranslateCompleted"
-#define sourceFileName @"/Documents/source.plist"
-#define resultFileName @"/Documents/results.plist"
-#define sourceLanguageFileName @"/Documents/sourceLanguage.txt"
-#define targetLanguageFileName @"/Documents/targetLanguage.txt"
-#endif
+//https://developer.apple.com/documentation/Translation/translating-text-within-your-app
 
 @class HansTranslation;
 typedef void (^SRTTranslation_Handler) (HansTranslation * _Nullable translater,
                                         NSArray <NSString *>* _Nullable resultsArray,
                                         NSError * _Nullable error);
-
+@class UIViewController,NSViewController;
 NS_ASSUME_NONNULL_BEGIN
-UIKIT_EXTERN API_AVAILABLE(ios(18.0)) API_UNAVAILABLE(macCatalyst)
+API_AVAILABLE(macos(15.0)) API_AVAILABLE(ios(18.0)) API_UNAVAILABLE(macCatalyst)
 @interface HansTranslation : NSObject
 -(id)init NS_UNAVAILABLE;
-@property (nonatomic, readonly) NSString *sourceLanguage;
-@property (nonatomic, readonly) NSString *targetLanguage;
+@property (nonatomic, readonly) NSString *sourceLanguageIdentifier;
+@property (nonatomic, readonly) NSString *targetLanguageIdentifier;
+
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSString *headerText;
+@property (nonatomic) NSString *buttonText;
+@property (nonatomic) NSString *footerText;
 
 -(id)initWithSourceLanguage:(NSString *)source withTargetLanguage:(NSString *)target;
 
--(BOOL)translate:(NSArray <NSString *>*)sourceArray
-      withRootVC:(UIViewController *)rootVC
-     withHandler:(SRTTranslation_Handler)handler;
+-(BOOL)translate:(nonnull NSArray <NSString *>*)sourceArray
+#if TARGET_OS_IOS
+      withRootVC:(nonnull UIViewController *)rootVC
+#else
+      withRootVC:(nonnull NSViewController *)rootVC
+#endif
+     withHandler:(nonnull SRTTranslation_Handler)handler;
 
 //Exist languages in this device, without download anything in translate action.
 +(NSArray *)existLanguageIdentfiers;
