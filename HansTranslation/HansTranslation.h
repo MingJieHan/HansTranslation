@@ -5,12 +5,6 @@
 //  Created by MingJie Han on 2024/9/22.
 //
 
-//
-//#if TARGET_OS_IOS
-//#import <UIKit/UIKit.h>
-//#elif TARGET_OS_MAC
-//#import <Cocoa/Cocoa.h>
-//#endif
 #import <Foundation/Foundation.h>
 #import <HansTranslation/HansTranslation.h>
 
