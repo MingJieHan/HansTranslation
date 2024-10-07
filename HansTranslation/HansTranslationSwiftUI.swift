@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Translation
 
-@available(iOS 18.0, *)
+@available(iOS 18.0, macOS 15.0, *)
 struct MainViewInterface:View{
     public var headerText:String = ""
     public var translateText:String  = "Translate"

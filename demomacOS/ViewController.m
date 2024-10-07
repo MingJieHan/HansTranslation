@@ -44,9 +44,9 @@
     
     sourceTextField.stringValue = @"Hello World\nHello Hans\nApple";
     
-    NSArray *array = [HansTranslation existLanguageIdentfiers];
+    NSArray *array = [HansTranslationObject existLanguageIdentfiers];
     for (NSString *identifier in array){
-        NSString *name = [HansTranslation nameWithLocalIdentifier:identifier];
+        NSString *name = [HansTranslationObject nameWithLocalIdentifier:identifier];
         NSString *title = [[NSString alloc] initWithFormat:@"%@ (%@)", name, identifier];
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(changeSourceIdentifier:) keyEquivalent:@""];
         [sourceLanguageButton.menu addItem:item];
@@ -55,9 +55,9 @@
         [targetLanguageButton.menu addItem:item];
     }
     
-    array = [HansTranslation availableLanguageIdentifiers];
+    array = [HansTranslationObject availableLanguageIdentifiers];
     for (NSString *identifier in array){
-        NSString *name = [HansTranslation nameWithLocalIdentifier:identifier];
+        NSString *name = [HansTranslationObject nameWithLocalIdentifier:identifier];
         NSString *title = [[NSString alloc] initWithFormat:@"%@ (%@)", name, identifier];
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(changeSourceIdentifier:) keyEquivalent:@""];
         [sourceLanguageButton.menu addItem:item];
@@ -86,11 +86,11 @@
     NSLog(@"%@", targetLanguageButton.title);
     NSString *sourceId = [self identifierForTitle:sourceLanguageButton.title];
     NSString *targetId = [self identifierForTitle:targetLanguageButton.title];
-    HansTranslation *transfer = [[HansTranslation alloc] initWithSourceLanguage:sourceId
+    HansTranslationObject *transfer = [[HansTranslationObject alloc] initWithSourceLanguage:sourceId
                                                              withTargetLanguage:targetId];
 //    HansTranslation *transfer = [[HansTranslation alloc] initWithSourceLanguage:@"en-CN"            // Warning about your input text language.
 //                                                             withTargetLanguage:@"zh-Hans-CN"];     // Warning for translation target language.
-    transfer.headerText = [NSString stringWithFormat:@"Translate to %@\nAre you sure?\n\n", [HansTranslation nameWithLocalIdentifier:targetId]];
+    transfer.headerText = [NSString stringWithFormat:@"Translate to %@\nAre you sure?\n\n", [HansTranslationObject nameWithLocalIdentifier:targetId]];
     transfer.buttonText = @"Sure";
     NSMutableArray *sources = [[NSMutableArray alloc] init];
     if (sourceTextField.stringValue && sourceTextField.stringValue.length > 0){
@@ -108,7 +108,7 @@
     
     [transfer translate:sources
              withRootVC:self
-            withHandler:^(HansTranslation * _Nullable translater,
+            withHandler:^(HansTranslationObject * _Nullable translater,
                           NSArray<NSString *> * _Nullable resultsArray,
                           NSError * _Nullable error) {
         if (error){

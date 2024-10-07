@@ -6,8 +6,10 @@
 //
 
 #import <HansTranslation-Swift.h>
-#import "HansTranslation.h"
+#import "HansTranslationObject.h"
+
 #import <Translation/Translation.h>
+
 #if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
 #else
@@ -17,8 +19,10 @@
 // Google 的翻译API
 // https://developers.google.com/ml-kit/language/translation/ios
 
-HansTranslation *staticSRTTranslation;
-@interface HansTranslation(){
+HansTranslationObject *staticSRTTranslation;
+
+API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
+@interface HansTranslationObject(){
     SRTTranslation_Handler completedHandler;
 #if TARGET_OS_IOS
     UIViewController *swiftViewController;
@@ -30,19 +34,20 @@ HansTranslation *staticSRTTranslation;
 }
 @end
 
-@implementation HansTranslation
+API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
+@implementation HansTranslationObject
 @synthesize sourceLanguageIdentifier,targetLanguageIdentifier;
 @synthesize title, headerText, buttonText, footerText;
 
 -(BOOL)availableForIdentifier:(NSString *)identifier{
-    NSArray <NSString *>*availables = [HansTranslation existLanguageIdentfiers];
+    NSArray <NSString *>*availables = [HansTranslationObject existLanguageIdentfiers];
     for (NSString *str in availables){
         if ([str isEqualToString:identifier]){
             return YES;
         }
     }
     
-    availables = [HansTranslation availableLanguageIdentifiers];
+    availables = [HansTranslationObject availableLanguageIdentifiers];
     for (NSString *str in availables){
         if ([str isEqualToString:identifier]){
             return YES;

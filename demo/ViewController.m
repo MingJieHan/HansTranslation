@@ -6,8 +6,6 @@
 //
 
 #import "ViewController.h"
-#import <CoreLocation/CoreLocation.h>
-
 #import <HansTranslation/HansTranslation.h>
 
 @interface ViewController (){
@@ -36,7 +34,7 @@
     NSString *target = [targetArray objectAtIndex:runningIndex];
     
     if (@available(iOS 18.0, *)) {
-        HansTranslation *transer = [[HansTranslation alloc] initWithSourceLanguage:sourceIdentifier
+        HansTranslationObject *transer = [[HansTranslationObject alloc] initWithSourceLanguage:sourceIdentifier
                                                                 withTargetLanguage:target];
         transer.title = @"只有iOS 18 以后的操作系统才可用";
         transer.headerText = @"点击翻译按钮继续";
@@ -44,7 +42,7 @@
         transer.footerText = @"尾巴";
         [transer translate:demoStrings
                 withRootVC:self
-               withHandler:^(HansTranslation * _Nullable translater,
+               withHandler:^(HansTranslationObject * _Nullable translater,
                      NSArray<NSString *> * _Nullable resultsArray,
                      NSError * _Nullable error) {
             if (error){
@@ -53,8 +51,8 @@
             }
 
             NSString *title = [[NSString alloc] initWithFormat:@"%@ translate to %@",
-                [HansTranslation nameWithLocalIdentifier:self->sourceIdentifier],
-                [HansTranslation nameWithLocalIdentifier:target]];
+                [HansTranslationObject nameWithLocalIdentifier:self->sourceIdentifier],
+                [HansTranslationObject nameWithLocalIdentifier:target]];
             NSMutableString *message = [[NSMutableString alloc] init];
             for (int i=0;i<resultsArray.count;i++){
                 NSString *from = [self->demoStrings objectAtIndex:i];
@@ -75,12 +73,6 @@
             [self presentViewController:alert animated:YES completion:nil];
             return;
         }];
-    }else{
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"HansTranslation available iOS18." message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
     }
 }
 
@@ -88,14 +80,18 @@
     [super viewDidAppear:animated];
     
     if (@available(iOS 18.0, *)) {
-        NSArray <NSString *>*array = [HansTranslation existLanguageIdentfiers];
-        for (NSString *str in array){
-            NSLog(@"%@ (%@) Installed.", [HansTranslation nameWithLocalIdentifier:str], str);
+        NSArray <NSString *>*array = [HansTranslationObject existLanguageIdentfiers];
+        if (array && array.count > 0){
+            for (NSString *str in array){
+                NSLog(@"%@ (%@) Installed.", [HansTranslationObject nameWithLocalIdentifier:str], str);
+            }
+        }else{
+            NSLog(@"Warning HansTranslation existLanguageIdentfiers failed.");
         }
         
-        array = [HansTranslation availableLanguageIdentifiers];
+        array = [HansTranslationObject availableLanguageIdentifiers];
         for (NSString *str in array){
-            NSLog(@"Available %@ (%@).", [HansTranslation nameWithLocalIdentifier:str], str);
+            NSLog(@"Available %@ (%@).", [HansTranslationObject nameWithLocalIdentifier:str], str);
         }
         
         sourceIdentifier = @"en-CN";
@@ -107,19 +103,23 @@
         ];
         
         targetArray = [[NSMutableArray alloc] init];
-        for (NSString *str in [HansTranslation existLanguageIdentfiers]){
+        for (NSString *str in [HansTranslationObject existLanguageIdentfiers]){
             if ([str isEqualToString:sourceIdentifier]){
                 continue;
             }
             [targetArray addObject:str];
         }
-        for (NSString *str in [HansTranslation availableLanguageIdentifiers]){
+        for (NSString *str in [HansTranslationObject availableLanguageIdentifiers]){
             [targetArray addObject:str];
         }
         runningIndex = 0;
         [self translateAction];
     }else{
-        NSLog(@"iOS 18 only.");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"HansTranslation available iOS18." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
     }
     return;
 }

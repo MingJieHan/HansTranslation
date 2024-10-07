@@ -1,6 +1,9 @@
 # HansTranslation
 Call Translation of SwiftUI from Object-C into framework in Xcode.
 
+存在的待解决问题：
+在iOS 17.6设备上，调试程序时，报Translation_SwiftUI.framework 异常错误
+即在低于iOS18的设备上，未找到运行程序的方法。
 
 Apple Translation 提供了SwiftUI调用的例子，如 https://developer.apple.com/documentation/translation/translating-text-within-your-app
 
