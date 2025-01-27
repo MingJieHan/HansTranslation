@@ -31,13 +31,14 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     NSWindow *rootWindow;
 #endif
     BridgingClass *bridging;
+    UIBarButtonItem *skipButtonItem;
 }
 @end
 
 API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
 @implementation HansTranslationObject
 @synthesize sourceLanguageIdentifier,targetLanguageIdentifier;
-@synthesize title, headerText, buttonText, footerText;
+@synthesize title, headerText, buttonText, translatingText, footerText;
 
 -(BOOL)availableForIdentifier:(NSString *)identifier{
     NSArray <NSString *>*availables = [HansTranslationObject existLanguageIdentfiers];
@@ -85,14 +86,30 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     return staticSRTTranslation;
 }
 
-+(NSArray *)existLanguageIdentfiers{
++(NSArray <NSString *>*)existLanguageIdentfiers{
     NSArray <NSString *> *array = NSLocale.preferredLanguages;  //系统已经安装的语言
     return array;
 }
 
-+(NSArray *)availableLanguageIdentifiers{
++(NSArray <NSString *>*)existLanguageNames{
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    for (NSString *identifier in [HansTranslationObject existLanguageIdentfiers]){
+        [results addObject:[HansTranslationObject nameWithLocalIdentifier:identifier]];
+    }
+    return results;
+}
+
++(NSArray <NSString *>*)availableLanguageIdentifiers{
     NSArray <NSString *> *array = [NSLocale availableLocaleIdentifiers];
     return array;
+}
+
++(NSArray <NSString *>*)availableLanguageNames{
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    for (NSString *identifier in [HansTranslationObject availableLanguageIdentifiers]){
+        [results addObject:[HansTranslationObject nameWithLocalIdentifier:identifier]];
+    }
+    return results;
 }
 
 +(NSString *)nameWithLocalIdentifier:(NSString *)identifier{
@@ -104,9 +121,18 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
 
 -(void)cancelTranslate{
 #if TARGET_OS_IOS
-    [swiftViewController dismissViewControllerAnimated:YES completion:nil];
+    [swiftViewController dismissViewControllerAnimated:YES completion:^{
+        if (self->completedHandler){
+            self->completedHandler(self, nil, nil);
+            self->completedHandler = nil;
+        }
+    }];
 #else
-    [swiftViewController dismissViewController:swiftViewController];
+    [rootWindow endSheet:swiftViewController.view.window];
+    if (self->completedHandler){
+        self->completedHandler(self, nil, nil);
+        self->completedHandler = nil;
+    }
 #endif
     return;
 }
@@ -118,6 +144,8 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
       withRootVC:(NSViewController *)rootVC
 #endif
      withHandler:(SRTTranslation_Handler)handler{
+    
+    
     if (nil == rootVC){
         NSLog(@"HansTranslation rootVC can NOT nil.");
         return NO;
@@ -127,14 +155,17 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
         return NO;
     }
     completedHandler = handler;
-
+    
+    NSString *progressNotificationName = @"SRTTranslatingProgress";
     NSString *completedNotificationName = @"SRTTranslateCompleted";
     bridging = [BridgingClass alloc];
     bridging.headerText = headerText;
     bridging.buttonText = buttonText;
+    bridging.translatingText = translatingText;
     bridging.footerText = footerText;
-
+    
     bridging.sourceArray = sourceArray;
+    bridging.progressNotificationName = progressNotificationName;
     bridging.completedNotificationName = completedNotificationName;
     bridging.sourceLanguageIdentifier = sourceLanguageIdentifier;
     bridging.targetLanguageIdentifier = targetLanguageIdentifier;
@@ -144,9 +175,11 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     
 #if TARGET_OS_IOS
     swiftViewController.title = title;
+    skipButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTranslate)];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:swiftViewController];
+    swiftViewController.navigationItem.leftBarButtonItem = skipButtonItem;
     [rootVC presentViewController:nav animated:YES completion:^{
-        self->swiftViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTranslate)];
+        
     }];
 #else
     rootWindow = rootVC.view.window;
@@ -156,6 +189,11 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
         
     }];
 #endif
+    
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(translateProgressNotification:)
+                                               name:progressNotificationName
+                                             object:nil];
+    
     
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(translateCompletedNotification:)
                                                name:completedNotificationName
@@ -175,18 +213,26 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     }else if ([returnObject isKindOfClass:[NSError class]]){
         error = (NSError *)returnObject;
     }
+    
 #if TARGET_OS_IOS
     [swiftViewController dismissViewControllerAnimated:YES completion:^{
         if (self->completedHandler){
-            self->completedHandler(self, res, error);
+            self->completedHandler(self, res, error.localizedDescription);
+            self->completedHandler = nil;
         }
     }];
 #else
     [rootWindow endSheet:swiftViewController.view.window];
     if (self->completedHandler){
-        self->completedHandler(self, res, error);
+        self->completedHandler(self, res, error.localizedDescription);
+        self->completedHandler = nil;
     }
 #endif
+    return;
+}
+
+-(void)translateProgressNotification:(NSNotification *)notification{
+    skipButtonItem.enabled = NO;
     return;
 }
 

@@ -13,10 +13,12 @@ import Translation
 @objc public class BridgingClass:NSObject{
     @objc public var headerText:String = ""
     @objc public var buttonText:String = ""
+    @objc public var translatingText:String = ""
     @objc public var footerText:String = ""
     
     @objc public var sourceArray:Array = ["Hans Translation"]
     @objc public var completedNotificationName:String = ""
+    @objc public var progressNotificationName:String = ""
     @objc public var sourceLanguageIdentifier:String = ""
     @objc public var targetLanguageIdentifier:String = ""
 #if os(iOS)
@@ -25,12 +27,15 @@ import Translation
         vc.hidesBottomBarWhenPushed = true
         vc.rootView.headerText = headerText
         vc.rootView.translateText = buttonText
+        vc.rootView.translatingText = translatingText
         vc.rootView.footerText = footerText
         
         vc.rootView.sourceArray = sourceArray
         vc.rootView.completedNotificationName = completedNotificationName
+        vc.rootView.progressNotificationName = progressNotificationName
         vc.rootView.sourceLanguageIdentifier = sourceLanguageIdentifier
         vc.rootView.targetLanguageIdentifier = targetLanguageIdentifier
+        vc.isModalInPresentation = true;
         return vc
     }
 #elseif os(macOS)
@@ -42,8 +47,10 @@ import Translation
         
         vc.rootView.sourceArray = sourceArray
         vc.rootView.completedNotificationName = completedNotificationName
+        vc.rootView.progressNotificationName = progressNotificationName
         vc.rootView.sourceLanguageIdentifier = sourceLanguageIdentifier
         vc.rootView.targetLanguageIdentifier = targetLanguageIdentifier
+        vc.isModalInPresentation = true;
         return vc
     }
 #endif

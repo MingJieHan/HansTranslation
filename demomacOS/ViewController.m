@@ -39,10 +39,11 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    
     [sourceLanguageButton.menu removeAllItems];
     [targetLanguageButton.menu removeAllItems];
     
-    sourceTextField.stringValue = @"Hello World\nHello Hans\nApple";
+    sourceTextField.stringValue = @"Hello World\nHello Hans\nApple\nThe length is 150 cm.";
     
     NSArray *array = [HansTranslationObject existLanguageIdentfiers];
     for (NSString *identifier in array){

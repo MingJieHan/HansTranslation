@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4538C99E2CE5806400E935FC /* HansTranslation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DD4B3B2CA02EEB000C0B37 /* HansTranslation.framework */; platformFilter = ios; };
+		4538C99F2CE5806400E935FC /* HansTranslation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 45DD4B3B2CA02EEB000C0B37 /* HansTranslation.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		453C90462CB3CB7600BB61F7 /* HansTranslation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45DD4B3B2CA02EEB000C0B37 /* HansTranslation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		453C90472CB3CB7600BB61F7 /* HansTranslation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 45DD4B3B2CA02EEB000C0B37 /* HansTranslation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		453C91CE2CB4A03600BB61F7 /* Translation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453C91CD2CB4A03600BB61F7 /* Translation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -17,6 +19,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4538C9A02CE5806400E935FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45DD4B042CA02537000C0B37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45DD4B3A2CA02EEB000C0B37;
+			remoteInfo = HansTranslation;
+		};
 		453C91CA2CB4095E00BB61F7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 45DD4B042CA02537000C0B37 /* Project object */;
@@ -41,6 +50,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4538C9A22CE5806400E935FC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4538C99F2CE5806400E935FC /* HansTranslation.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		453C90432CB3C9D600BB61F7 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -77,6 +97,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4538C9832CE5802E00E935FC /* SRT Translater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRT Translater.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		453C91CD2CB4A03600BB61F7 /* Translation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Translation.framework; path = System/Library/Frameworks/Translation.framework; sourceTree = SDKROOT; };
 		45CD47692CA3940600CC06B6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		45DD4B0C2CA02537000C0B37 /* demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +107,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4538C99B2CE5803000E935FC /* Exceptions for "SRT Translator" folder in "SRT Translater" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			platformFiltersByRelativePath = {
+				HansServer.framework = (ios, );
+			};
+			target = 4538C9822CE5802E00E935FC /* SRT Translater */;
+		};
 		45DD4B232CA02539000C0B37 /* Exceptions for "demo" folder in "demo" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -110,7 +141,32 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		4538C9F92CE5812A00E935FC /* Exceptions for "SRT Translator" folder in "Embed Frameworks" phase from "SRT Translater" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				HansServer.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 4538C9A22CE5806400E935FC /* Embed Frameworks */;
+			membershipExceptions = (
+				HansServer.framework,
+			);
+			platformFiltersByRelativePath = {
+				HansServer.framework = (ios, );
+			};
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4538C9842CE5802E00E935FC /* SRT Translator */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4538C99B2CE5803000E935FC /* Exceptions for "SRT Translator" folder in "SRT Translater" target */,
+				4538C9F92CE5812A00E935FC /* Exceptions for "SRT Translator" folder in "Embed Frameworks" phase from "SRT Translater" target */,
+			);
+			path = "SRT Translator";
+			sourceTree = "<group>";
+		};
 		45DD4B0E2CA02537000C0B37 /* demo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -143,6 +199,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4538C9802CE5802E00E935FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4538C99E2CE5806400E935FC /* HansTranslation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		45DD4B092CA02537000C0B37 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -194,6 +258,7 @@
 				45FBCEBD2CAB5FC60079CAED /* demoSwift */,
 				45DD4B0E2CA02537000C0B37 /* demo */,
 				45DD4B3C2CA02EEB000C0B37 /* HansTranslation */,
+				4538C9842CE5802E00E935FC /* SRT Translator */,
 				453C91CC2CB4A03500BB61F7 /* Frameworks */,
 				45DD4B0D2CA02537000C0B37 /* Products */,
 			);
@@ -206,6 +271,7 @@
 				45DD4B3B2CA02EEB000C0B37 /* HansTranslation.framework */,
 				45FBCEBC2CAB5FC60079CAED /* demoSwift.app */,
 				45FBCFB22CACAF210079CAED /* demomacOS.app */,
+				4538C9832CE5802E00E935FC /* SRT Translater.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,6 +289,30 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4538C9822CE5802E00E935FC /* SRT Translater */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4538C99C2CE5803000E935FC /* Build configuration list for PBXNativeTarget "SRT Translater" */;
+			buildPhases = (
+				4538C97F2CE5802E00E935FC /* Sources */,
+				4538C9802CE5802E00E935FC /* Frameworks */,
+				4538C9812CE5802E00E935FC /* Resources */,
+				4538C9A22CE5806400E935FC /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4538C9A12CE5806400E935FC /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4538C9842CE5802E00E935FC /* SRT Translator */,
+			);
+			name = "SRT Translater";
+			packageProductDependencies = (
+			);
+			productName = "SRT Translator";
+			productReference = 4538C9832CE5802E00E935FC /* SRT Translater.app */;
+			productType = "com.apple.product-type.application";
+		};
 		45DD4B0B2CA02537000C0B37 /* demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 45DD4B242CA02539000C0B37 /* Build configuration list for PBXNativeTarget "demo" */;
@@ -328,6 +418,9 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					4538C9822CE5802E00E935FC = {
+						CreatedOnToolsVersion = 16.1;
+					};
 					45DD4B0B2CA02537000C0B37 = {
 						CreatedOnToolsVersion = 16.0;
 						LastSwiftMigration = 1600;
@@ -362,11 +455,19 @@
 				45FBCEBB2CAB5FC60079CAED /* demoSwift */,
 				45FBCFB12CACAF210079CAED /* demomacOS */,
 				45DD4B3A2CA02EEB000C0B37 /* HansTranslation */,
+				4538C9822CE5802E00E935FC /* SRT Translater */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4538C9812CE5802E00E935FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		45DD4B0A2CA02537000C0B37 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -398,6 +499,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4538C97F2CE5802E00E935FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		45DD4B082CA02537000C0B37 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -429,6 +537,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4538C9A12CE5806400E935FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 45DD4B3A2CA02EEB000C0B37 /* HansTranslation */;
+			targetProxy = 4538C9A02CE5806400E935FC /* PBXContainerItemProxy */;
+		};
 		453C91CB2CB4095E00BB61F7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 45DD4B3A2CA02EEB000C0B37 /* HansTranslation */;
@@ -447,6 +561,104 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4538C9992CE5803000E935FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = 3KM9DQ5C6Z;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SRT Translator/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hanmingjie.SRT-Translator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		4538C99A2CE5803000E935FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = 3KM9DQ5C6Z;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+					"$(PROJECT_DIR)/SRT\\ Translator",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SRT Translator/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hanmingjie.SRT-Translator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
 		45DD4B252CA02539000C0B37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -686,7 +898,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanmingjie.HansTranslation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -735,7 +947,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanmingjie.HansTranslation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -871,6 +1083,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4538C99C2CE5803000E935FC /* Build configuration list for PBXNativeTarget "SRT Translater" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4538C9992CE5803000E935FC /* Debug */,
+				4538C99A2CE5803000E935FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		45DD4B072CA02537000C0B37 /* Build configuration list for PBXProject "HansTranslation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

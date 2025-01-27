@@ -10,7 +10,7 @@
 @class HansTranslationObject;
 typedef void (^SRTTranslation_Handler) (HansTranslationObject * _Nullable translater,
                                         NSArray <NSString *>* _Nullable resultsArray,
-                                        NSError * _Nullable error);
+                                        NSString * _Nullable errorString);
 @class UIViewController,NSViewController;
 NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
@@ -22,6 +22,7 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *headerText;
 @property (nonatomic) NSString *buttonText;
+@property (nonatomic) NSString *translatingText;
 @property (nonatomic) NSString *footerText;
 
 -(id)initWithSourceLanguage:(NSString *)source withTargetLanguage:(NSString *)target;
@@ -35,10 +36,14 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
      withHandler:(nonnull SRTTranslation_Handler)handler;
 
 //Exist languages in this device, without download anything in translate action.
-+(NSArray *)existLanguageIdentfiers;
++(NSArray <NSString *>*)existLanguageIdentfiers;
++(NSArray <NSString *>*)existLanguageNames;
+
 
 //Can selected language target, and may need download in translation view.
 +(NSArray *)availableLanguageIdentifiers;
++(NSArray <NSString *>*)availableLanguageNames;
+
 
 //return name for identifier with current system language.
 +(NSString *)nameWithLocalIdentifier:(NSString *)identifier;

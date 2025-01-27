@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0A0E90EC-3C31-4450-8A7E-F0842D5DD756"
+            uuid = "C4B925ED-4DFA-41F5-BF6F-4CEBEB17D323"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "demo/ViewController.m"
+            filePath = "HansTranslation/HansTranslationSwiftUI.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "-viewDidAppear:"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "triggerTranslation()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
