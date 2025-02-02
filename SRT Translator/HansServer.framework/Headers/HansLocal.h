@@ -14,6 +14,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface HansLocal : NSObject
+//return language Code.
++(NSString * _Nullable)languageCodeWithLocalIdentifier:(NSString * _Nonnull)identifier;
+
+//return country code.
++(NSString * _Nullable)countryCodeWithLocalIdentifier:(NSString * _Nonnull)identifier;
+
 //return description with system language.
 +(NSString * _Nullable)systemDescriptionLocalIdentifier:(NSString *)identifier;
 

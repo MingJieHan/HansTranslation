@@ -7,7 +7,6 @@
 
 #import "TransLateLanguageCell.h"
 #import <HansTranslation/HansTranslation.h>
-#import <HansServer/HansServer.h>
 
 @interface TransLateLanguageCell(){
     
@@ -17,9 +16,20 @@
 @implementation TransLateLanguageCell
 @synthesize languageIdentifier;
 @synthesize isCurrent;
+@synthesize available;
+
+-(void)setAvailable:(BOOL)_available{
+    available = _available;
+    if (available){
+        self.textLabel.textColor = [UIColor blackColor];
+    }else{
+        self.textLabel.textColor = [UIColor lightGrayColor];
+    }
+    return;
+}
 
 -(id)initWithReuseIdentifier:(NSString *)reuseIdentifier{
-    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self){
         
     }
@@ -28,8 +38,7 @@
 
 -(void)setLanguageIdentifier:(NSString *)_languageIdentifier{
     languageIdentifier = _languageIdentifier;
-    self.textLabel.text = [HansLocal targetLocalIdentifierDescription:languageIdentifier];
-    self.detailTextLabel.text = [HansLocal systemDescriptionLocalIdentifier:languageIdentifier];
+    self.textLabel.text = [HansTranslationObject stringForLanguageCode:languageIdentifier];
 }
 
 -(void)setIsCurrent:(BOOL)_isCurrent{

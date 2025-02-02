@@ -54,8 +54,23 @@ import Translation
         return vc
     }
 #endif
-
-    func translationIsSupported(from source: Locale.Language, to target: Locale.Language) async -> Bool {
+    //space between languages.
+    @objc public static func translationSupportedLanguages() async -> String{
+        let availability = LanguageAvailability()
+        let array = await availability.supportedLanguages
+        var res:String = ""
+        for language in array{
+            if res.count > 0{
+                res.append(" ")
+            }
+            res.append(language.minimalIdentifier)
+        }
+        return res
+    }
+    
+    @objc public static func translationIsSupported(sourceIdentifier:String,targetIdentifier:String) async -> Bool {
+        let source = Locale.Language.init(identifier: sourceIdentifier)
+        let target = Locale.Language.init(identifier: targetIdentifier)
         let availability = LanguageAvailability()
         let status = await availability.status(from: source, to: target)
         switch status {

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface UIHans : NSObject
-+(UIHans * _Nonnull)defaultUIHans;
++(UIHans *)defaultUIHans;
 
 /*
  return current ViewController for presentViewController etc.

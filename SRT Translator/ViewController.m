@@ -35,6 +35,8 @@
     
     NSMutableArray *sourceStrings;
     SRTHistoryTableView *historyTableView;
+    
+    NSArray <NSString *> *availableLanguageIdentifiers;
 }
 
 @end
@@ -52,7 +54,6 @@
     for (NSString *identifier in preferredArray){
         NSLog(@"系统已安装语言: %@", [HansLocal mixedDescriptionLocalIdentifier:identifier]);
     }
-//    NSString *autoRes = [HansLocal dominantLocalWithString:@"哈哈哈"];
     
     if (nil == sourceBGView){
         sourceBGView = [[UIView alloc] initWithFrame:CGRectMake(10.f, 70.f, self.view.frame.size.width-20.f, 140.f)];
@@ -64,7 +65,7 @@
     
     if (nil == sourceLanguageButton){
         sourceLanguageButton = [[UIHansButton alloc] initWithFrame:CGRectMake(20.f, 10.f, 150.f, 40.f)];
-        sourceLanguageButton.enabled = YES;
+        sourceLanguageButton.enabled = NO;
         sourceLanguageButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
         [sourceLanguageButton addTarget:self action:@selector(selectLanguageAction:) forControlEvents:UIControlEventTouchUpInside];
         [sourceLanguageButton setTitleColor:[UIHans colorFromHEXString:@"000000"] forState:UIControlStateNormal];
@@ -77,7 +78,7 @@
     if (nil == selectFileButton){
         selectFileButton = [[UIHansButton alloc] initWithFrame:CGRectMake( (sourceBGView.frame.size.width-200.f)/2.f,
                                                                           50.f, 200.f, 40.f)];
-        selectFileButton.enabled = YES;
+        selectFileButton.enabled = NO;
         selectFileButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:[NSBundle.mainBundle pathForResource:@"files" ofType:@"png"]];
         [selectFileButton setImage:image forState:UIControlStateNormal];
@@ -100,7 +101,7 @@
     
     if (nil == targetLanguageButton){
         targetLanguageButton = [[UIHansButton alloc] initWithFrame:CGRectMake(20.f, 10.f, 150.f, 40.f)];
-        targetLanguageButton.enabled = YES;
+        targetLanguageButton.enabled = NO;
         targetLanguageButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
         [targetLanguageButton addTarget:self action:@selector(selectLanguageAction:) forControlEvents:UIControlEventTouchUpInside];
         [targetLanguageButton setTitleColor:[UIHans colorFromHEXString:@"2A9FB8"] forState:UIControlStateNormal];
@@ -141,6 +142,32 @@
         historyTableView = [[SRTHistoryTableView alloc] initWithFrame:CGRectMake(10.f, y, self.view.frame.size.width-20.f, self.view.frame.size.height-y-20.f)];
         [self.view addSubview:historyTableView];
     }
+
+    availableLanguageIdentifiers = nil;
+    [HansTranslationObject translationSupportedLanguagesCompletedHandler:^(NSArray * _Nonnull languages) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->availableLanguageIdentifiers = languages;
+            self->languageSelector.availableLanguageIdentifiers = self->availableLanguageIdentifiers;
+            self->sourceLanguageButton.enabled = YES;
+            self->targetLanguageButton.enabled = YES;
+        });
+    }];
+}
+
+-(void)checkTranslateAvailable{
+    [HansTranslationObject supportTranslateFrom:sourceLanguageIdentifier
+                                             to:targetLanguageIdentifier
+                           withCompletedHandler:^(BOOL support) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (support){
+                self->selectFileButton.enabled = YES;
+            }else{
+                self->selectFileButton.enabled = NO;
+                //TODO alert for that.
+            }
+        });
+    }];
+    return;
 }
 
 -(void)setTargetLanguage:(NSString *)languageIdentifier{
@@ -154,8 +181,15 @@
     if (nil == targetLanguageIdentifier){
         targetLanguageIdentifier = preferredArray.firstObject;
     }
-    NSString *showLanguageString = [HansLocal mixedDescriptionLocalIdentifier:targetLanguageIdentifier];
+    NSString *showLanguageString = [HansTranslationObject stringForLanguageCode:targetLanguageIdentifier];
     [targetLanguageButton setTitle:showLanguageString forState:UIControlStateNormal];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setValue:targetLanguageButton.titleLabel.font forKey: NSFontAttributeName];
+    CGSize size = [showLanguageString sizeWithAttributes:dict];
+    [targetLanguageButton setFrame:CGRectMake(targetLanguageButton.frame.origin.x, targetLanguageButton.frame.origin.y, size.width + 3.f, targetLanguageButton.frame.size.height)];
+    
+    [self checkTranslateAvailable];
     return;
 }
 
@@ -170,14 +204,22 @@
     if (nil == sourceLanguageIdentifier){
         sourceLanguageIdentifier = preferredArray.firstObject;
     }
-    NSString *showLanguageString = [HansLocal mixedDescriptionLocalIdentifier:sourceLanguageIdentifier];
+    NSString *showLanguageString = [HansTranslationObject stringForLanguageCode:sourceLanguageIdentifier];
     [sourceLanguageButton setTitle:showLanguageString forState:UIControlStateNormal];
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setValue:sourceLanguageButton.titleLabel.font forKey: NSFontAttributeName];
+    CGSize size = [showLanguageString sizeWithAttributes:dict];
+    [sourceLanguageButton setFrame:CGRectMake(sourceLanguageButton.frame.origin.x, sourceLanguageButton.frame.origin.y, size.width + 3.f, sourceLanguageButton.frame.size.height)];
+
+    [self checkTranslateAvailable];
     return;
 }
 
 -(void)selectLanguageAction:(id)sender{
     if (nil == languageSelector){
         languageSelector = [[TransLateLanguageSelectView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+        languageSelector.availableLanguageIdentifiers = availableLanguageIdentifiers;
     }
     ViewController *strongSelf = self;
     CGRect fromRect = CGRectZero;
@@ -187,6 +229,7 @@
         };
         fromRect = sourceLanguageButton.frame;
         languageSelector.currentLanguageIdentifier = sourceLanguageIdentifier;
+        languageSelector.unavailableLanguageIdentifier = nil;
     }
     if (sender == targetLanguageButton){
         languageSelector.handler = ^(NSString * _Nullable selectedIdentifier) {
@@ -194,6 +237,7 @@
         };
         fromRect = targetLanguageButton.frame;
         languageSelector.currentLanguageIdentifier = targetLanguageIdentifier;
+        languageSelector.unavailableLanguageIdentifier = sourceLanguageIdentifier;
     }
     [languageSelector showFrom:self fromRect:fromRect];
 }

@@ -58,6 +58,7 @@ struct MainViewInterface:View{
                     Slider(value: $value, in: 0...100)
                         .frame(width: 200)
                         .background(.clear)
+                        .tint(Color(red: 0.02, green: 0.12, blue: 0.14))
                         .disabled(true)
                     Text(progressString)
                 }
@@ -121,6 +122,16 @@ struct MainViewInterface:View{
                 index += 1
             }
         } catch {
+            switch error {
+            case TranslationError.unsupportedTargetLanguage:
+                print ("aa");
+            case TranslationError.unsupportedSourceLanguage:
+                print ("bb")
+            case TranslationError.unsupportedLanguagePairing:
+                print("cc")
+            default:
+                print ("other")
+            }
             err = error
             print (error.localizedDescription)
         }

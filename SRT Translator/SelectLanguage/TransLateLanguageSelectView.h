@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TransLateLanguageSelectView:UIView
 @property (nonatomic) TransLateLanguageSelectView_CompletedHandler handler;
 @property (nonatomic) NSString * _Nullable currentLanguageIdentifier;
-@property (nonatomic) NSString * _Nullable stringForDominant;
+@property (nonatomic) NSString * _Nullable unavailableLanguageIdentifier;;
+@property (nonatomic) NSArray <NSString *> *availableLanguageIdentifiers;
 
 -(id)init NS_UNAVAILABLE;
 -(id)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;

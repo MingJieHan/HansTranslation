@@ -40,6 +40,11 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
 @synthesize sourceLanguageIdentifier,targetLanguageIdentifier;
 @synthesize title, headerText, buttonText, translatingText, footerText;
 
++(NSArray <NSString *>*)wholeLocalIdentifiers{
+    NSArray <NSString *> *array = [NSLocale availableLocaleIdentifiers];
+    return array;
+}
+
 -(BOOL)availableForIdentifier:(NSString *)identifier{
     NSArray <NSString *>*availables = [HansTranslationObject existLanguageIdentfiers];
     for (NSString *str in availables){
@@ -48,7 +53,7 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
         }
     }
     
-    availables = [HansTranslationObject availableLanguageIdentifiers];
+    availables = [HansTranslationObject wholeLocalIdentifiers];
     for (NSString *str in availables){
         if ([str isEqualToString:identifier]){
             return YES;
@@ -99,18 +104,6 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     return results;
 }
 
-+(NSArray <NSString *>*)availableLanguageIdentifiers{
-    NSArray <NSString *> *array = [NSLocale availableLocaleIdentifiers];
-    return array;
-}
-
-+(NSArray <NSString *>*)availableLanguageNames{
-    NSMutableArray *results = [[NSMutableArray alloc] init];
-    for (NSString *identifier in [HansTranslationObject availableLanguageIdentifiers]){
-        [results addObject:[HansTranslationObject nameWithLocalIdentifier:identifier]];
-    }
-    return results;
-}
 
 +(NSString *)nameWithLocalIdentifier:(NSString *)identifier{
     if (nil == identifier){
@@ -145,7 +138,6 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
 #endif
      withHandler:(SRTTranslation_Handler)handler{
     
-    
     if (nil == rootVC){
         NSLog(@"HansTranslation rootVC can NOT nil.");
         return NO;
@@ -155,6 +147,7 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
         return NO;
     }
     completedHandler = handler;
+    
     
     NSString *progressNotificationName = @"SRTTranslatingProgress";
     NSString *completedNotificationName = @"SRTTranslateCompleted";
@@ -171,7 +164,6 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
     bridging.targetLanguageIdentifier = targetLanguageIdentifier;
     
     swiftViewController = [bridging makeTranslateViewController];
-    
     
 #if TARGET_OS_IOS
     swiftViewController.title = title;
@@ -200,6 +192,47 @@ API_AVAILABLE(ios(18.0), macos(15.0)) API_UNAVAILABLE(macCatalyst)
                                              object:nil];
     return YES;
 }
+
++(NSString *)stringForLanguageCode:(NSString *)languageIdentifier{
+    NSString *language = [NSLocale.systemLocale localizedStringForLanguageCode:languageIdentifier];
+    NSString *country = nil;
+    NSDictionary *dict = [NSLocale componentsFromLocaleIdentifier:languageIdentifier];
+    NSString *countryCode = [dict valueForKey:@"kCFLocaleCountryCodeKey"];
+    if (countryCode){
+        country = [NSLocale.systemLocale localizedStringForCountryCode:countryCode];
+    }
+    if (country){
+        return [NSString stringWithFormat:@"%@ (%@)", language, country];
+    }
+    return language;
+}
+
++(void)translationSupportedLanguagesCompletedHandler:(void (^ _Nullable)(NSArray * languages))handler{
+    [BridgingClass translationSupportedLanguagesWithCompletionHandler:^(NSString * _Nonnull res) {
+        NSArray *array = [res componentsSeparatedByString:@" "];
+        NSArray *sortedArray = [array sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString *identifier1 = obj1;
+            NSString *identifier2 = obj2;
+            NSString *name1 = [HansTranslationObject stringForLanguageCode:identifier1];
+            NSString *name2 = [HansTranslationObject stringForLanguageCode:identifier2];
+            return [name1 localizedCompare:name2];
+        }];
+        handler(sortedArray);
+    }];
+    return;
+}
+
++(void)supportTranslateFrom:(NSString * _Nonnull)fromLanguageIdentifer
+                         to:(NSString * _Nonnull)toLanguageIdentifier
+       withCompletedHandler:(void (^ _Nonnull)(BOOL support))handler{
+    [BridgingClass translationIsSupportedWithSourceIdentifier:fromLanguageIdentifer
+                                             targetIdentifier:toLanguageIdentifier
+                                            completionHandler:^(BOOL res) {
+        handler(res);
+    }];
+    return;
+}
+
 
 #pragma mark - Translate completed notification
 -(void)translateCompletedNotification:(NSNotification *)notification{
