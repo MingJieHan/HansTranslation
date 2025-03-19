@@ -48,7 +48,7 @@ struct MainViewInterface:View{
             }
             if (translating){   //翻译中显示的内容
                 Spacer()        //竖向空间，自动延展
-                ProgressView()
+                ProgressView()  //转轮
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.gray))
                     .frame(width:40, height:40)
                 Text(currentLine)
