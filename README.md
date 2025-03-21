@@ -1,4 +1,4 @@
-# HansTranslation
+# Hans Translation
 Call Translation of SwiftUI from Object-C into framework in Xcode.
 
 存在的待解决问题：
@@ -11,4 +11,11 @@ Apple Translation 提供了SwiftUI调用的例子，如 https://developer.apple.
 
 未支持iOS macOS两个平台，在此framework中，涉及到不同编程语言下的预编译宏定义。
 
+"SRT Translation" available in Apple Store
+https://apps.apple.com/us/app/srt-translater/id6738302058
+
+Video in Youtube.
+https://www.youtube.com/watch?v=u-mXjfktRBQ
+
+如有定制开发需求， 请Email hanmingjie@gmail.com 联系。
 
